@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des produits{% endblock %}
+
+{% block body %}
+    <h1>Gestion des produits</h1>
+
+    <a href="{{ path('admin_product_new') }}" class="btn btn-success mb-3">Ajouter un produit</a>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Modèle</th>
+                <th>Prix</th>
+                <th>Type</th>
+                <th>Quantité</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+                <tr>
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.model }}</td>
+                    <td>{{ product.price }} €</td>
+                    <td>{{ product.type }}</td>
+                    <td>{{ product.quantity }}</td>
+                    <td>
+                        <a href="{{ path('admin_product_edit', { id: product.id }) }}" class="btn btn-primary btn-sm">Modifier</a>
+                        <a href="{{ path('admin_product_delete', { id: product.id }) }}"
+                           class="btn btn-danger btn-sm"
+                           onclick="return confirm('Confirmer la suppression ?');">
+                           Supprimer
+                        </a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6">Aucun produit trouvé.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

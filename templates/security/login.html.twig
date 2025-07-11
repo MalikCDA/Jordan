@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Inscription - Jordan E-commerce{% endblock %}
+{% block title %}Connexion - Jordan E-commerce{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -43,25 +43,24 @@
             padding-top: 76px; /* Ajustez selon la hauteur de votre navbar */
         }
 
-        .register-page {
+        .login-page {
             min-height: calc(100vh - 76px);
             display: flex;
             align-items: center;
             justify-content: center;
             background: #000000;
             position: relative;
-            padding: 20px 0;
         }
 
-        .register-container {
+        .login-container {
             position: relative;
             z-index: 2;
             width: 100%;
-            max-width: 500px;
+            max-width: 400px;
             padding: 20px;
         }
 
-        .register-card {
+        .login-card {
             background: rgba(0, 0, 0, 0.8); /* Fond noir semi-transparent */
             backdrop-filter: blur(10px);
             border: 1px solid rgba(220, 20, 60, 0.3);
@@ -76,7 +75,7 @@
             50% { transform: translateY(-10px); }
         }
 
-        .register-card-header {
+        .login-card-header {
             background: linear-gradient(135deg, #DC143C, #B91C3C);
             color: white;
             text-align: center;
@@ -86,7 +85,7 @@
             overflow: hidden;
         }
 
-        .register-card-header::before {
+        .login-card-header::before {
             content: '';
             position: absolute;
             top: -50%;
@@ -102,7 +101,7 @@
             100% { transform: rotate(360deg); }
         }
 
-        .register-card-header h4 {
+        .login-card-header h4 {
             margin: 0;
             font-weight: bold;
             font-size: 1.5rem;
@@ -117,7 +116,7 @@
             color: white; /* Texte blanc pour contraster */
         }
 
-        .register-input {
+        .login-input {
             border: 2px solid rgba(220, 20, 60, 0.5);
             border-radius: 10px;
             padding: 15px;
@@ -126,11 +125,11 @@
             color: white;
         }
 
-        .register-input::placeholder {
+        .login-input::placeholder {
             color: rgba(255, 255, 255, 0.7);
         }
 
-        .register-input:focus {
+        .login-input:focus {
             border-color: #DC143C;
             box-shadow: 0 0 20px rgba(220, 20, 60, 0.5);
             background: rgba(255, 255, 255, 0.2);
@@ -138,7 +137,7 @@
             outline: none;
         }
 
-        .register-btn {
+        .login-btn {
             background: linear-gradient(135deg, #DC143C, #B91C3C);
             border: none;
             border-radius: 10px;
@@ -152,13 +151,13 @@
             color: white;
         }
 
-        .register-btn:hover {
+        .login-btn:hover {
             transform: translateY(-3px);
             box-shadow: 0 10px 25px rgba(220, 20, 60, 0.4);
             background: linear-gradient(135deg, #B91C3C, #DC143C);
         }
 
-        .register-btn:active {
+        .login-btn:active {
             transform: translateY(-1px);
         }
 
@@ -174,43 +173,32 @@
             text-decoration: underline;
         }
 
+        .error-shake {
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
         .form-label {
             font-weight: bold;
             color: white; /* Labels en blanc */
             margin-bottom: 8px;
         }
 
-        .form-check-label {
+        /* Alerte d'erreur adaptée au thème sombre */
+        .alert-danger {
+            background: rgba(220, 20, 60, 0.2);
+            border: 1px solid rgba(220, 20, 60, 0.5);
             color: white;
-        }
-
-        .form-check-input {
-            background-color: rgba(255, 255, 255, 0.1);
-            border: 2px solid rgba(220, 20, 60, 0.5);
-        }
-
-        .form-check-input:checked {
-            background-color: #DC143C;
-            border-color: #DC143C;
-        }
-
-        .form-check-input:focus {
-            border-color: #DC143C;
-            box-shadow: 0 0 0 0.25rem rgba(220, 20, 60, 0.25);
-        }
-
-        /* Gestion des erreurs */
-        .invalid-feedback {
-            color: #DC143C;
-        }
-
-        .is-invalid {
-            border-color: #DC143C;
         }
 
         /* Responsive */
         @media (max-width: 576px) {
-            .register-container {
+            .login-container {
                 padding: 15px;
             }
             
@@ -218,7 +206,7 @@
                 padding: 20px;
             }
             
-            .register-card-header h4 {
+            .login-card-header h4 {
                 font-size: 1.3rem;
             }
             
@@ -228,7 +216,7 @@
         }
 
         /* Animation d'apparition */
-        .register-card {
+        .login-card {
             animation: fadeInUp 0.8s ease-out;
         }
 
@@ -243,68 +231,52 @@
             }
         }
 
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
         /* Texte en bas en blanc */
         .text-center p {
             color: white;
-        }
-
-        /* Styles pour les erreurs de formulaire */
-        .form-error {
-            color: #DC143C;
-            font-size: 0.875rem;
-            margin-top: 5px;
         }
     </style>
 {% endblock %}
 
 {% block body %}
-<div class="register-page">
-    <div class="register-container">
-        <div class="card register-card">
-            <div class="card-header register-card-header">
-                <h4><i class="fas fa-user-plus"></i> INSCRIPTION</h4>
+<div class="login-page">
+    <div class="login-container">
+        <div class="card login-card">
+            <div class="card-header login-card-header">
+                <h4><i class="fas fa-sign-in-alt"></i> CONNEXION</h4>
             </div>
             <div class="card-body">
-                {{ form_start(registrationForm) }}
+                {% if error %}
+                    <div class="alert alert-danger error-shake">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
+                
+                <form method="post">
                     <div class="mb-3">
-                        {{ form_label(registrationForm.name, null, {'label_attr': {'class': 'form-label'}}) }}
-                        {{ form_widget(registrationForm.name, {'attr': {'class': 'form-control register-input'}}) }}
-                        {{ form_errors(registrationForm.name) }}
+                        <label for="inputEmail" class="form-label">Email</label>
+                        <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control login-input" autocomplete="email" required autofocus>
                     </div>
-
+                    
                     <div class="mb-3">
-                        {{ form_label(registrationForm.email, null, {'label_attr': {'class': 'form-label'}}) }}
-                        {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control register-input'}}) }}
-                        {{ form_errors(registrationForm.email) }}
+                        <label for="inputPassword" class="form-label">Mot de passe</label>
+                        <input type="password" name="password" id="inputPassword" class="form-control login-input" autocomplete="current-password" required>
                     </div>
-
-                    <div class="mb-3">
-                        {{ form_label(registrationForm.plainPassword.first, null, {'label_attr': {'class': 'form-label'}}) }}
-                        {{ form_widget(registrationForm.plainPassword.first, {'attr': {'class': 'form-control register-input'}}) }}
-                        {{ form_errors(registrationForm.plainPassword.first) }}
-                    </div>
-
-                    <div class="mb-3">
-                        {{ form_label(registrationForm.plainPassword.second, null, {'label_attr': {'class': 'form-label'}}) }}
-                        {{ form_widget(registrationForm.plainPassword.second, {'attr': {'class': 'form-control register-input'}}) }}
-                        {{ form_errors(registrationForm.plainPassword.second) }}
-                    </div>
-
-                    <div class="mb-3 form-check">
-                        {{ form_widget(registrationForm.agreeTerms, {'attr': {'class': 'form-check-input'}}) }}
-                        {{ form_label(registrationForm.agreeTerms, null, {'label_attr': {'class': 'form-check-label'}}) }}
-                        {{ form_errors(registrationForm.agreeTerms) }}
-                    </div>
-
+                    
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                    
                     <div class="d-grid">
-                        <button type="submit" class="btn btn-jordan register-btn">
-                            <i class="fas fa-user-plus"></i> S'INSCRIRE
+                        <button class="btn btn-jordan login-btn" type="submit">
+                            <i class="fas fa-sign-in-alt"></i> SE CONNECTER
                         </button>
                     </div>
-                {{ form_end(registrationForm) }}
-
+                </form>
+                
                 <div class="text-center mt-3">
-                    <p>Déjà un compte ? <a href="{{ path('app_login') }}" class="jordan-link">Connectez-vous</a></p>
+                    <p>Pas encore de compte ? <a href="{{ path('app_register') }}" class="jordan-link">Inscrivez-vous</a></p>
                 </div>
             </div>
         </div>

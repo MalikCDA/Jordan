@@ -1,0 +1,123 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon Panier{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        /* Assure que la navbar est bien fixe */
+        .navbar {
+            position: fixed !important;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.9) !important;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(220, 20, 60, 0.3);
+        }
+
+        body {
+            background: #000000;
+            padding-top: 76px;
+            color: white;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+
+        th, td {
+            border: 1px solid rgba(220, 20, 60, 0.3);
+            padding: 15px;
+            text-align: center;
+        }
+
+        th {
+            background-color: rgba(220, 20, 60, 0.2);
+            color: #DC143C;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-jordan {
+            background: linear-gradient(135deg, #DC143C, #B91C3C);
+            border: none;
+            border-radius: 10px;
+            padding: 15px 30px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            color: white;
+            text-transform: uppercase;
+            box-shadow: 0 10px 25px rgba(220, 20, 60, 0.3);
+        }
+
+        .btn-jordan:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(220, 20, 60, 0.5);
+            background: linear-gradient(135deg, #B91C3C, #DC143C);
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-5 {
+            margin-top: 50px;
+        }
+
+        h1, h3 {
+            text-align: center;
+            color: #DC143C;
+        }
+
+        p {
+            text-align: center;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="container page-content">
+        <h1>Votre panier</h1>
+
+        {% if cart_items is not empty %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Produit</th>
+                        <th>Quantité</th>
+                        <th>Prix unitaire</th>
+                        <th>Total</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in cart_items %}
+                        <tr>
+                            <td>{{ item.product.name }}</td>
+                            <td>{{ item.quantity }}</td>
+                            <td>{{ item.product.price }} €</td>
+                            <td>{{ item.totalPrice }} €</td>
+                            <td>
+                                <a href="{{ path('app_cart_remove', { id: item.id }) }}" class="btn btn-danger">Retirer</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <h3>Total général : {{ total }} €</h3>
+        {% else %}
+            <p>Votre panier est vide.</p>
+        {% endif %}
+
+        <div class="text-center mt-5">
+            <a href="{{ path('app_home') }}" class="btn-jordan">← Retour à la boutique</a>
+        </div>
+    </div>
+{% endblock %}

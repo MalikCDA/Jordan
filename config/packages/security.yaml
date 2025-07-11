@@ -1,13 +1,15 @@
 security:
     password_hashers:
-        App\Entity\User:
+        App\Entity\Admin:
             algorithm: auto
+
 
     providers:
         app_user_provider:
             entity:
-                class: App\Entity\User
+                class: App\Entity\Admin
                 property: email
+        # used to reload user from session & other features (e.g. switch_user)
 
     firewalls:
         dev:
@@ -16,10 +18,17 @@ security:
         main:
             lazy: true
             provider: app_user_provider
-            custom_authenticator: App\Security\LoginFormAuthenticator
+            custom_authenticator:
+                - App\Security\AppAthenticatorAuthenticator
             logout:
                 path: app_logout
                 target: app_home
+
+            remember_me:
+                secret: '%kernel.secret%'
+                lifetime: 604800
+                path: /
+                always_remember_me: true
 
     access_control:
         - { path: ^/admin, roles: ROLE_ADMIN }

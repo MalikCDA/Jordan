@@ -1,0 +1,12 @@
+{# templates/admin/dashboard.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard Admin{% endblock %}
+
+{% block body %}
+<h1>Bienvenue sur le dashboard Admin</h1>
+
+<p>
+    <a href="{{ path('admin_products') }}" class="btn btn-primary">Gérer les produits</a>
+</p>
+{% endblock %}

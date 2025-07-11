@@ -16,21 +16,27 @@ class Product
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'Le nom du produit est obligatoire')]
+    #[Assert\Length(max: 255, maxMessage: 'Le nom ne peut pas dépasser 255 caractères')]
     private ?string $name = null;
 
-    #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: 'Le modèle est obligatoire')]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $model = null;
 
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
+    #[Assert\NotBlank(message: 'Le prix est obligatoire')]
     #[Assert\Positive(message: 'Le prix doit être positif')]
-    private ?float $price = null;
+    private ?string $price = null;
 
     #[ORM\Column(length: 50)]
-    #[Assert\Choice(choices: ['vêtement', 'basket'], message: 'Le type doit être soit "vêtement" soit "basket"')]
+    #[Assert\NotBlank(message: 'Le type est obligatoire')]
+    #[Assert\Choice(
+        choices: ['vêtement', 'basket'],
+        message: 'Le type doit être soit "vêtement" soit "basket"'
+    )]
     private ?string $type = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: 'La quantité est obligatoire')]
     #[Assert\PositiveOrZero(message: 'La quantité doit être positive ou nulle')]
     private ?int $quantity = null;
 
@@ -39,6 +45,14 @@ class Product
 
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $description = null;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $createdAt = null;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTimeImmutable();
+    }
 
     public function getId(): ?int
     {
@@ -61,18 +75,18 @@ class Product
         return $this->model;
     }
 
-    public function setModel(string $model): static
+    public function setModel(?string $model): static
     {
         $this->model = $model;
         return $this;
     }
 
-    public function getPrice(): ?float
+    public function getPrice(): ?string
     {
         return $this->price;
     }
 
-    public function setPrice(float $price): static
+    public function setPrice(string $price): static
     {
         $this->price = $price;
         return $this;
@@ -122,8 +136,38 @@ class Product
         return $this;
     }
 
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    {
+        $this->createdAt = $createdAt;
+        return $this;
+    }
+
+    /**
+     * Vérifie si le produit est disponible (quantité > 0)
+     */
     public function isAvailable(): bool
     {
         return $this->quantity > 0;
+    }
+
+    /**
+     * Réduit la quantité du produit
+     */
+    public function reduceQuantity(int $amount): static
+    {
+        if ($this->quantity >= $amount) {
+            $this->quantity -= $amount;
+        }
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->name . ($this->model ? ' - ' . $this->model : '');
     }
 }

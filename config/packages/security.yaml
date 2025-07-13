@@ -2,19 +2,20 @@ security:
     password_hashers:
         App\Entity\Admin:
             algorithm: auto
-
+        App\Entity\User:
+            algorithm: auto
 
     providers:
         app_user_provider:
             entity:
                 class: App\Entity\Admin
                 property: email
-        # used to reload user from session & other features (e.g. switch_user)
 
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+
         main:
             lazy: true
             provider: app_user_provider
@@ -23,7 +24,6 @@ security:
             logout:
                 path: app_logout
                 target: app_home
-
             remember_me:
                 secret: '%kernel.secret%'
                 lifetime: 604800
